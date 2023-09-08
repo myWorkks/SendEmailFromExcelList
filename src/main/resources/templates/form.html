@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Email Form</title>
+</head>
+
+<body>
+	<h1>Email Form</h1>
+	<form action="/sent" method="post" enctype="multipart/form-data">
+		<label for="to">To:</label>
+		<input type="text" name="to" ><br><br>
+
+		<label for="from">From:</label>
+		<input type="text" name="from" value="bharath@marolix.com" disabled><br><br>
+
+		<label for="cc">CC:</label>
+		<input type="text" name="cc"><br><br>
+
+		<label for="bcc">BCC:</label>
+		<input type="text" name="bcc"><br><br>
+		<label for="bcc">Choose an Excel:</label>
+		<input type="file" name="file"><br><br>
+		<label for="subject">Subject:</label>
+		<input type="text" name="subject"><br><br>
+
+		<label for="message">Message:</label><br>
+		<textarea name="message" rows="5" cols="40" required></textarea><br><br>
+
+		<input type="submit" value="Send Email">
+	</form>
+</body>
+
+</html>
