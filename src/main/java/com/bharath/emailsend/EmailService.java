@@ -15,11 +15,13 @@ public class EmailService {
 	private Utility utility;
 
 	public String sendEmail(EmailInfo info) {
-		System.out.println(info);
-		System.out.println(info.getCcList());
+		//System.out.println(info);
+		//System.out.println(info.getCcList());
 		SimpleMailMessage message = new SimpleMailMessage();
 
 		message.setFrom(info.getFrom());
+		if(info==null||info.getToList().isEmpty())
+			throw new EmailException("to list not added or to list is invalid kindly check");
 		String[] array = utility.listToArray(info.getToList());
 		message.setTo(array);
 

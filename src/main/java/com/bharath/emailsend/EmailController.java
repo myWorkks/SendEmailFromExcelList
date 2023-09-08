@@ -5,10 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 //
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 //
@@ -60,7 +62,7 @@ public class EmailController {
 		info.setFrom(from);
 		info.setText(message);
 		if (request instanceof MultipartHttpServletRequest) {
-			System.out.println("it is in if block multipart file");
+			// System.out.println("it is in if block multipart file");
 			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 
 			// Retrieve the uploaded files
@@ -74,30 +76,66 @@ public class EmailController {
 					InputStream fis = file.getInputStream();
 					ReadDataFromExcel r = new ReadDataFromExcel();
 					info = r.readData(fis, info);
-					System.out.println("boolean" + info.getToList().isEmpty());
-					System.out.println(info.getCcList() != null && info.getCcList().isEmpty());
-					System.out.println(info.getBccList() != null && info.getBccList().isEmpty());
-		
-					
-					if (info.getToList() != null && info.getToList().isEmpty()) {
-						List<String> toList = utility.convertArrayToList(request.getParameter("to"));
-						info.setToList(toList);
+//					System.out.println("boolean" + (info.getToList() != null && info.getToList().isEmpty()));
+//					System.out.println(info.getCcList() != null && info.getCcList().isEmpty());
+//					System.out.println(info.getBccList() != null && info.getBccList().isEmpty());
+					List<String> toList1 = info.getToList();
+					if (toList1 == null) {
+						toList1 = new ArrayList<String>();
+						toList1 = utility.convertArrayToList(request.getParameter("to"));
+						info.setToList(toList1);
+						// System.out.println("toList null feteched from form" + info);
+					} else {
+						// if(utility.convertArrayToList(request.getParameter("to"))!=null)
+						// System.out.println(toList1);
+						toList1.addAll(utility.convertArrayToList(request.getParameter("to")));
+						// System.out.println(toList1);
+						toList1 = toList1.stream().distinct().collect(Collectors.toList());
+						// System.out.println(toList1);
+						info.setToList(toList1);
 					}
-					if (info.getCcList() != null && info.getCcList().isEmpty()) {
-						System.out.println("cc list is empty");
-						String cc = request.getParameter("cc");
-						List<String> toList = utility.convertArrayToList(cc);
-						info.setCcList(toList);
-
+//					if (info.getToList() != null && info.getToList().isEmpty()) {
+//						List<String> toList = utility.convertArrayToList(request.getParameter("to"));
+//						info.setToList(toList);
+//					}
+					toList1 = info.getCcList();
+					if (toList1 == null) {
+						toList1 = new ArrayList<String>();
+						toList1 = utility.convertArrayToList(request.getParameter("cc"));
+						// System.out.println(toList1);
+						info.setCcList(toList1);
+					} else {
+						toList1.addAll(utility.convertArrayToList(request.getParameter("cc")));
+						toList1 = toList1.stream().distinct().collect(Collectors.toList());
+						// System.out.println(toList1);
+						info.setCcList(toList1);
 					}
-					if (info.getBccList() != null && info.getBccList().isEmpty()) {
-						String cc = request.getParameter("bcc");
-						List<String> toList = utility.convertArrayToList(cc);
-						info.setBccList(toList);
+//					if (info.getCcList() != null && info.getCcList().isEmpty()) {
+//						System.out.println("cc list is empty");
+//						String cc = request.getParameter("cc");
+//						List<String> toList = utility.convertArrayToList(cc);
+//						info.setCcList(toList);
+//
+//					}
+					toList1 = info.getBccList();
+					if (toList1 == null) {
+						toList1 = new ArrayList<String>();
+						toList1 = utility.convertArrayToList(request.getParameter("bcc"));
+						info.setBccList(toList1);
+					} else {
+						toList1.addAll(utility.convertArrayToList(request.getParameter("bcc")));
+						toList1 = toList1.stream().distinct().collect(Collectors.toList());
+						// System.out.println(toList1);
+						info.setBccList(toList1);
 					}
+//					if (info.getBccList() != null && info.getBccList().isEmpty()) {
+//						String cc = request.getParameter("bcc");
+//						List<String> toList = utility.convertArrayToList(cc);
+//						info.setBccList(toList);
+//					}
 
 				} else {
-					System.out.println("file is empty");
+					// System.out.println("file is empty");
 					String to = request.getParameter("to");
 
 					// System.out.println(from.length());
@@ -106,16 +144,19 @@ public class EmailController {
 
 					List<String> toList = utility.convertArrayToList(cc);
 					info.setCcList(toList);
+					// System.out.println("cc list" + toList);
 					toList = utility.convertArrayToList(bcc);
+					// System.out.println("bcc list" + toList);
 					info.setBccList(toList);
 
 					toList = utility.convertArrayToList(to);
+					// System.out.println("to list" + toList);
 					info.setToList(toList);
 				}
 			}
 		}
 
-		System.out.println("info before invokung service" + info);
+		// System.out.println("info before invokung service" + info);
 		emailService.sendEmail(info);
 
 		return new ModelAndView("redirect:/success");
@@ -133,7 +174,7 @@ public class EmailController {
 		driver.close();
 		// Thread.sleep(1000);
 		context.close();
-		System.out.println("terminated success fully");
+		// System.out.println("terminated success fully");
 	}
 }
 

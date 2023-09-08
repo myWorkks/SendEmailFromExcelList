@@ -27,51 +27,71 @@ public class ReadDataFromExcel {
 		XSSFSheet sheet = workbook.getSheetAt(0);
 
 		int rows = sheet.getPhysicalNumberOfRows();
+		// System.out.println("to rows"+rows);
 //to list
 		List<String> toList = new ArrayList<String>();
 		DataFormatter df = new DataFormatter();
 		for (int i = 0; i < rows - 1; i++) {
 
 			String to = df.formatCellValue(sheet.getRow(i + 1).getCell(0));
+			if (to.length() == 0)
+				break;
 			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
 				toList.add(to);
+			else {
+				String message = "to Email id invalid in Excel sheet with mail id" + to + " end";
+				throw new EmailException(message);
+			}
 		}
 //cc list
 		sheet = workbook.getSheetAt(1);
 
 		rows = sheet.getPhysicalNumberOfRows();
-		System.out.println("cc rows" + rows);
+		// System.out.println("cc rows" + rows);
 		List<String> ccList = new ArrayList<String>();
 
 		for (int i = 0; i < rows - 1; i++) {
 
 			String to = df.formatCellValue(sheet.getRow(i + 1).getCell(0));
+
+			if (to.length() == 0)
+				break;
 			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
 				ccList.add(to);
+			else {
+				String message = "cc Email id invalid in Excel sheet with mail id " + to;
+				throw new EmailException(message);
+			}
 		}
 //bccList
 		sheet = workbook.getSheetAt(2);
 
 		rows = sheet.getPhysicalNumberOfRows();
-		System.out.println("bcc rows" + rows);
+		// System.out.println("bcc rows" + rows);
 		List<String> bccList = new ArrayList<String>();
 
 		for (int i = 0; i < rows - 1; i++) {
 
 			String to = df.formatCellValue(sheet.getRow(i + 1).getCell(0));
+			if (to.length() == 0)
+				break;
 			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
 				bccList.add(to);
+			else {
+				String message = "bcc Email id invalid in Excel sheet with mail id " + to;
+				throw new EmailException(message);
+			}
 		}
-		System.out.println("bccList" + bccList);
-		System.out.println(ccList);
-		System.out.println("toList" + toList);
+//		System.out.println("bccList" + bccList);
+//		System.out.println(ccList);
+//		System.out.println("toList" + toList);
 		if (!bccList.isEmpty())
 			info.setBccList(bccList);
 		if (!ccList.isEmpty())
 			info.setCcList(ccList);
 		if (!toList.isEmpty())
 			info.setToList(toList);
-		System.out.println(info);
+		// System.out.println(info);
 		try {
 			stream.close();
 			workbook.close();
