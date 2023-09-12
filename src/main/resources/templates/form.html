@@ -9,25 +9,37 @@
 	<h1>Email Form</h1>
 	<form action="/sent" method="post" enctype="multipart/form-data">
 		<label for="to">To:</label>
-		<input type="text" name="to" ><br><br>
+		<input type="text" name="to">
+		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 
 		<label for="from">From:</label>
-		<input type="text" name="from" value="bharath@marolix.com" disabled><br><br>
+		<input type="text" name="from" value="bharath@marolix.com" disabled>
+		<br><br>
 
 		<label for="cc">CC:</label>
-		<input type="text" name="cc"><br><br>
+		<input type="text" name="cc">
+		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 
 		<label for="bcc">BCC:</label>
-		<input type="text" name="bcc"><br><br>
+		<input type="text" name="bcc">
+		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 		<label for="bcc">Choose an Excel:</label>
 		<input type="file" name="file"><br><br>
+		<p>Choose an excel file which contains send to emails list at sheet 1,cc emails at sheet 2,bcc emails at sheet 3
+		</p><br <img src="./templates/images/EmailSendpic.png" alt="excel reference picture" />
 		<label for="subject">Subject:</label>
 		<input type="text" name="subject"><br><br>
 
 		<label for="message">Message:</label><br>
 		<textarea name="message" rows="5" cols="40" required></textarea><br><br>
+		<label for="attachments">Attachments:</label>
+		<input type="file" name="attachments[]" multiple><br><br>
+		<p>Choose one or more files to attach (hold down the Ctrl/Cmd key to select multiple files).</p>
 
 		<input type="submit" value="Send Email">
+	</form>
+	<form action="/close" method="get">
+		<input type="submit" value="stop application">
 	</form>
 </body>
 
