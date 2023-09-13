@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Utility {
+	public final String validMail = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+
 	public List<String> convertArrayToList(String input) {
 		System.out.println(input);
 		List<String> list = new ArrayList<String>();
@@ -14,7 +16,7 @@ public class Utility {
 			String[] a = input.split(",");
 			for (String s : a) {
 				s = s.trim();
-				if (s.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+")) {
+				if (s.matches(validMail)) {
 					System.out.println(s);
 					list.add(s);
 				} else
@@ -22,7 +24,7 @@ public class Utility {
 			}
 			return list;
 		} else if (input.length() > 0 && !input.contains(",")) {
-			if (input.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+")) {
+			if (input.trim().matches(validMail)) {
 				list.add(input);
 
 				return list;

@@ -3,17 +3,90 @@
 
 <head>
 	<title>Email Form</title>
+	<style>
+		/* Style for the body */
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f2f2f2;
+		}
+
+		/* Style for the form container */
+		form {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #ffffff;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		/* Style for form labels */
+		label {
+			font-weight: bold;
+		}
+
+		/* Style for text input fields */
+		input[type="text"],
+		input[type="file"],
+		textarea {
+			width: 100%;
+			padding: 10px;
+			/* Padding added on all sides */
+			margin-bottom: 15px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			font-size: 16px;
+			/* Add padding only to the right side */
+			padding-right: 0px;
+			/* Adjust the padding amount as needed */
+		}
+
+		/* Style for the submit button */
+		input[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 3px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		/* Style for the submit button on hover */
+		input[type="submit"]:hover {
+			background-color: #0056b3;
+		}
+
+		/* Style for the paragraphs */
+		p {
+			font-size: 14px;
+			color: #555;
+		}
+
+		/* Style for the "stop application" button */
+		input[type="submit"][value="stop application"] {
+			background-color: #dc3545;
+		}
+
+		/* Style for the "stop application" button on hover */
+		input[type="submit"][value="stop application"]:hover {
+			background-color: #c82333;
+		}
+	</style>
 </head>
 
 <body>
 	<h1>Email Form</h1>
-	<form action="/sent" method="post" enctype="multipart/form-data">
+	<form action="/sent1" method="post" enctype="multipart/form-data">
 		<label for="to">To:</label>
 		<input type="text" name="to">
 		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 
 		<label for="from">From:</label>
-		<input type="text" name="from" value="bharath@marolix.com" disabled>
+		<input type="text" name="from">
 		<br><br>
 
 		<label for="cc">CC:</label>
@@ -25,15 +98,21 @@
 		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 		<label for="bcc">Choose an Excel:</label>
 		<input type="file" name="file"><br><br>
-		<p>Choose an excel file which contains send to emails list at sheet 1,cc emails at sheet 2,bcc emails at sheet 3
-		</p><br <img src="./templates/images/EmailSendpic.png" alt="excel reference picture" />
+		<p>Choose an excel file which contains send to emails list at sheet 1, cc emails at sheet 2, bcc emails at sheet
+			3
+		</p><br>
+		<img src="../static/images/email.png" width="550" th:src="@{images/email.png}" 	alt="excel reference picture"/>
+		
+
+		<br>
 		<label for="subject">Subject:</label>
 		<input type="text" name="subject"><br><br>
 
 		<label for="message">Message:</label><br>
 		<textarea name="message" rows="5" cols="40" required></textarea><br><br>
+
 		<label for="attachments">Attachments:</label>
-		<input type="file" name="attachments[]" multiple><br><br>
+		<input type="file" name="attachments" multiple><br><br>
 		<p>Choose one or more files to attach (hold down the Ctrl/Cmd key to select multiple files).</p>
 
 		<input type="submit" value="Send Email">
@@ -41,6 +120,10 @@
 	<form action="/close" method="get">
 		<input type="submit" value="stop application">
 	</form>
+	
+
+   
+
 </body>
 
 </html>

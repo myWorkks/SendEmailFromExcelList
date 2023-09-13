@@ -19,7 +19,7 @@ public class AspectClass {
 //	@Autowired
 	public AspectClass(WebDriver webDriver) {
 		this.webDriver = webDriver;
-		System.out.println("aspect object created");
+		//System.out.println("aspect object created");
 	}
 
 //	@Before("mainMethodpointcut()")
@@ -30,17 +30,17 @@ public class AspectClass {
 
 	@AfterReturning(pointcut = "mainMethodpointcut()")
 	public void afterAppRun() {
-		System.out.println("main method executed");
+		//System.out.println("main method executed");
 		webDriver.get("http://localhost:8080/");
 	}
 
 	@Before("execution(*  com.bharath.emailsend..EmailController.*(..))")
 	public void checkto() {
-		System.out.println("checking before");
+		//System.out.println("checking before");
 	}
 
 	@Pointcut("execution(public static void com.bharath.emailsend.EmailSendApplication.main(String[]))")
 	public void mainMethodpointcut() {
-		System.out.println("main method poincut");
+		//System.out.println("main method poincut");
 	}
 }

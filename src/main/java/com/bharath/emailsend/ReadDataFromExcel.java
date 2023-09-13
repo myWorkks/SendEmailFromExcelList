@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ReadDataFromExcel {
 	public EmailInfo readData(InputStream stream, EmailInfo info) {
 		// System.out.println("reader called");
+		Utility u= new Utility();
 
 		XSSFWorkbook workbook = null;
 		try {
@@ -36,10 +37,10 @@ public class ReadDataFromExcel {
 			String to = df.formatCellValue(sheet.getRow(i + 1).getCell(0));
 			if (to.length() == 0)
 				break;
-			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
+			if (to.trim().matches(u.validMail))
 				toList.add(to);
 			else {
-				String message = "to Email id invalid in Excel sheet with mail id" + to + " end";
+				String message = "To Email id invalid in Excel sheet with mail id :" + to ;
 				throw new EmailException(message);
 			}
 		}
@@ -56,7 +57,7 @@ public class ReadDataFromExcel {
 
 			if (to.length() == 0)
 				break;
-			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
+			if (to.trim().matches(u.validMail))
 				ccList.add(to);
 			else {
 				String message = "cc Email id invalid in Excel sheet with mail id " + to;
@@ -75,7 +76,7 @@ public class ReadDataFromExcel {
 			String to = df.formatCellValue(sheet.getRow(i + 1).getCell(0));
 			if (to.length() == 0)
 				break;
-			if (to.matches("[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z]+"))
+			if (to.trim().matches(u.validMail))
 				bccList.add(to);
 			else {
 				String message = "bcc Email id invalid in Excel sheet with mail id " + to;

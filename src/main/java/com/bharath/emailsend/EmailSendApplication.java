@@ -19,16 +19,15 @@ public class EmailSendApplication {
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext con = SpringApplication.run(EmailSendApplication.class, args);
 //ApplicationContext cont= new AnnotationConfigApplicationContext(BeansConfig.class);
-	WebDriver driver = con.getBean(WebDriver.class);
+		WebDriver driver = con.getBean(WebDriver.class);
 		Thread.sleep(5000);
 //
-	driver.get("http://localhost:8080/");
+		driver.manage().window().maximize();
+		driver.get("http://localhost:8080/");
 		// driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 
 		// Thread.sleep(5000);
 		// con.close();
 	}
-
-	
 
 }

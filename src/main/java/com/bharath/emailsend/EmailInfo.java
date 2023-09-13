@@ -5,7 +5,7 @@ import java.util.List;
 
 public class EmailInfo {
 	private List<String> toList;
-
+	private List<Attachment> attachments;
 	private String from;
 	private List<String> ccList;
 	private List<String> bccList;
@@ -60,10 +60,18 @@ public class EmailInfo {
 		this.text = text;
 	}
 
+	public List<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<Attachment> attachments) {
+		this.attachments = attachments;
+	}
+
 	@Override
 	public String toString() {
-		return "EmailInfo [toList=" + toList + ", from=" + from + ", ccList=" + ccList + ", bccList=" + bccList
-				+ ", subject=" + subject + ", text=" + text + "]";
+		return "EmailInfo [toList=" + toList + ", attachments=" + attachments + ", from=" + from + ", ccList=" + ccList
+				+ ", bccList=" + bccList + ", subject=" + subject + ", text=" + text + "]";
 	}
 
 }

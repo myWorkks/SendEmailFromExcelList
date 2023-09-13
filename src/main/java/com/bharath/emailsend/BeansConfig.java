@@ -13,7 +13,7 @@ public class BeansConfig {
 	@Scope("singleton")
 	@Lazy
 	public WebDriver webDriver() {
-		System.out.println("web driver bean called");
+		//System.out.println("web driver bean called");
 		System.setProperty("webdriver.chrome.driver",
 				"G:\\MyWorks\\Extracts\\ChromeDriver\\chromedriver-win32\\chromedriver.exe");
 		return new ChromeDriver();
