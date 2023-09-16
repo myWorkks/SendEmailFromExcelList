@@ -1,9 +1,11 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
+import com.bharath.emailsend.exception.EmailException;
 
 @Component
 public class Utility {

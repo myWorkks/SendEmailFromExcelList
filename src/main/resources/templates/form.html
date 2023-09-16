@@ -30,6 +30,7 @@
 
 		/* Style for text input fields */
 		input[type="text"],
+		input[type="password"],
 		input[type="file"],
 		textarea {
 			width: 100%;
@@ -80,13 +81,16 @@
 
 <body>
 	<h1>Email Form</h1>
-	<form action="/sent1" method="post" enctype="multipart/form-data">
+	<form action="/send" method="post" enctype="multipart/form-data">
 		<label for="to">To:</label>
 		<input type="text" name="to">
 		<p> Enter the mail id's each separated by comma(',') Ex:bharath@gmail.com,</p><br><br>
 
 		<label for="from">From:</label>
 		<input type="text" name="from">
+		<br><br>
+		<label for="password">Password:</label>
+		<input type="password" name="password">
 		<br><br>
 
 		<label for="cc">CC:</label>
@@ -101,8 +105,8 @@
 		<p>Choose an excel file which contains send to emails list at sheet 1, cc emails at sheet 2, bcc emails at sheet
 			3
 		</p><br>
-		<img src="../static/images/email.png" width="550" th:src="@{images/email.png}" 	alt="excel reference picture"/>
-		
+		<img src="../static/images/email.png" width="550" th:src="@{images/email.png}" alt="excel reference picture" />
+
 
 		<br>
 		<label for="subject">Subject:</label>
@@ -120,9 +124,9 @@
 	<form action="/close" method="get">
 		<input type="submit" value="stop application">
 	</form>
-	
 
-   
+
+
 
 </body>
 

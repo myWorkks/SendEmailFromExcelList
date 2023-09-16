@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,10 +12,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bharath.emailsend.dto.Attachment;
+import com.bharath.emailsend.dto.EmailInfo;
+import com.bharath.emailsend.exception.EmailException;
+import com.bharath.emailsend.utility.ReadDataFromExcel;
+import com.bharath.emailsend.utility.Utility;
+
 @Component
 public class RequestToInfo {
 	@Autowired
 	private Utility utility;
+	private ReadDataFromExcel r = new ReadDataFromExcel();
 
 	public EmailInfo convertRequestToEmail(MultipartHttpServletRequest multipartRequest) throws IOException {
 		EmailInfo info = new EmailInfo();
@@ -40,7 +47,7 @@ public class RequestToInfo {
 		if (excel != null && !excel.isEmpty()) {
 
 			InputStream fis = excel.getInputStream();
-			ReadDataFromExcel r = new ReadDataFromExcel();
+
 			info = r.readData(fis, info);
 			List<String> toList1 = info.getToList();
 			if (toList1 == null) {
@@ -102,7 +109,54 @@ public class RequestToInfo {
 			info.setToList(toList);
 		}
 
-		List<MultipartFile> attachments = multipartRequest.getFiles(fileNamesl.get(1));
+		List<Attachment> attach = getAttachments(multipartRequest, fileNamesl.get(1));
+
+		info.setAttachments(attach);
+		info.setPassword(multipartRequest.getParameter("password"));
+		;
+
+		return info;
+
+	}
+
+	public List<EmailInfo> getIndividualInfo(MultipartHttpServletRequest request) throws IOException {
+
+		List<EmailInfo> list = new ArrayList<EmailInfo>();
+		Iterator<String> fns = request.getFileNames();
+		List<String> fileNames = new ArrayList<String>();
+
+		while (fns.hasNext()) {
+			fileNames.add(fns.next());
+		}
+		if (fileNames.isEmpty())
+			throw new EmailException("no files added ");
+		System.out.println(fileNames);
+		MultipartFile excel = request.getFile(fileNames.get(0));
+		if (excel == null || excel.isEmpty())
+			throw new EmailException("error with excel");
+		list = r.readEmailInfo(excel.getInputStream());
+		list.stream().forEach(s -> {
+			s.setFrom(request.getParameter("from"));
+			s.setPassword(request.getParameter("password"));
+			s.setSubject(request.getParameter("subject"));
+			String message = "Dear " + s.getName() + "," + System.lineSeparator() + request.getParameter("message");
+
+			s.setText(message);
+			try {
+				s.setAttachments(getAttachments(request, fileNames.get(1)));
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+
+		});
+
+		return list;
+	}
+
+	public List<Attachment> getAttachments(MultipartHttpServletRequest multipartRequest, String filename)
+			throws IOException {
+		List<MultipartFile> attachments = multipartRequest.getFiles(filename);
 		List<Attachment> attach = new ArrayList<>();
 		for (MultipartFile att : attachments) {
 			if (att != null && !att.isEmpty()) {
@@ -112,11 +166,18 @@ public class RequestToInfo {
 				attach.add(a);
 			}
 		}
-		info.setAttachments(attach);
-
-		;
-		System.out.println("info before service" + info);
-		return info;
-
+		return attach;
 	}
 }
+// creting email infos based on input text
+//String to = request.getParameter("to");
+//if (to.contains(",")) {
+//	List<String> toList = utility.convertArrayToList(to);
+//	for (String to1 : toList) {
+//		EmailInfo info = new EmailInfo();
+//		toList = new ArrayList<String>();
+//		toList.add(to1);
+//		info.setToList(toList);
+//		info.setAttachments(getAttachments(request, ""));
+//	}
+//}

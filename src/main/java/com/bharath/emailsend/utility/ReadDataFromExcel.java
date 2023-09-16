@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.utility;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,10 +12,14 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.bharath.emailsend.dto.EmailInfo;
+import com.bharath.emailsend.exception.EmailException;
+
 public class ReadDataFromExcel {
+	Utility u = new Utility();
+
 	public EmailInfo readData(InputStream stream, EmailInfo info) {
 		// System.out.println("reader called");
-		Utility u= new Utility();
 
 		XSSFWorkbook workbook = null;
 		try {
@@ -40,7 +44,7 @@ public class ReadDataFromExcel {
 			if (to.trim().matches(u.validMail))
 				toList.add(to);
 			else {
-				String message = "To Email id invalid in Excel sheet with mail id :" + to ;
+				String message = "To Email id invalid in Excel sheet with mail id :" + to;
 				throw new EmailException(message);
 			}
 		}
@@ -100,5 +104,72 @@ public class ReadDataFromExcel {
 			e.printStackTrace();
 		}
 		return info;
+	}
+
+	public List<EmailInfo> readEmailInfo(InputStream fis) {
+		List<EmailInfo> list = new ArrayList<EmailInfo>();
+		XSSFWorkbook workbook = null;
+		try {
+			workbook = new XSSFWorkbook(fis);
+		} catch (IOException e1) {
+
+			e1.printStackTrace();
+		}
+
+		XSSFSheet sheet = workbook.getSheetAt(0);
+
+		int rows = sheet.getPhysicalNumberOfRows();
+		DataFormatter df = new DataFormatter();
+		
+		for (int i = 1; i < rows; i++) {
+			List<String> toList = new ArrayList<String>();
+			EmailInfo info = new EmailInfo();
+
+			info.setName(df.formatCellValue(sheet.getRow(i).getCell(0)));
+			// to
+			String to = df.formatCellValue(sheet.getRow(i).getCell(1));
+			if (to.length() > 0) {
+				if (to.contains(",")) {
+					info.setToList(u.convertArrayToList(to));
+				} else {
+					if (to.trim().matches(u.validMail)) {
+						toList.add(to);
+						info.setToList(toList);
+					} else
+						throw new EmailException("invalid mailid in row " + i + "with mail " + to);
+				}
+			}
+			// cc
+			to = df.formatCellValue(sheet.getRow(i).getCell(2));
+			if (to.length() > 0) {
+				if (to.contains(",")) {
+					info.setCcList(u.convertArrayToList(to));
+				} else {
+					if (to.trim().matches(u.validMail)) {
+						toList=new ArrayList<String>();
+						toList.add(to);
+						info.setCcList(toList);
+					} else
+						throw new EmailException("invalid mailid in row " + i + "with mail " + to);
+				}
+			}
+
+			// bcc
+			to = df.formatCellValue(sheet.getRow(i).getCell(3));
+			if (to.length() > 0) {
+				if (to.contains(",")) {
+					info.setBccList(u.convertArrayToList(to));
+				} else {
+					if (to.trim().matches(u.validMail)) {
+						toList=new ArrayList<String>();
+						toList.add(to);
+						info.setBccList(toList);
+					} else
+						throw new EmailException("invalid mailid in row " + i + "with mail " + to);
+				}
+			}
+			list.add(info);
+		}
+		return list;
 	}
 }

@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bharath.emailsend.dto.EmailInfo;
+import com.bharath.emailsend.service.EmailService2;
+import com.bharath.emailsend.service.RequestToInfo;
+
 @RestController
+@CrossOrigin
 public class EmailController2 {
 	@Autowired
 	private EmailService2 emailService;
@@ -40,17 +46,27 @@ public class EmailController2 {
 
 	@GetMapping("/close")
 	public void terminateApp() throws InterruptedException {
-		System.out.println("terminating app");
+
 		driver.close();
-		// Thread.sleep(1000);
+
 		context.close();
-		// System.out.println("terminated success fully");
+
 	}
 
 	@PostMapping("/sent1")
 	public ModelAndView submitForm(MultipartHttpServletRequest request) throws IOException {
 
 		emailService.sendEmail(info.convertRequestToEmail(request));
+		return new ModelAndView("redirect:/success");
+
+	}
+
+	@PostMapping("/send")
+	public ModelAndView sendIndividualMail(MultipartHttpServletRequest request) throws IOException {
+		System.out.println("in controller");
+		List<EmailInfo> list = info.getIndividualInfo(request);
+
+		emailService.sendIndividually(list);
 		return new ModelAndView("redirect:/success");
 
 	}

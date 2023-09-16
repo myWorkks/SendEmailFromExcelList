@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.utility;
 
 import java.time.LocalDateTime;
 
@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.bharath.emailsend.exception.EmailException;
 
 @RestControllerAdvice
 public class ControllerAdvice {

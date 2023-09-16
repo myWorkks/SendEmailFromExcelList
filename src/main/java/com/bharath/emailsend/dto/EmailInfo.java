@@ -1,16 +1,35 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.dto;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class EmailInfo {
+
 	private List<String> toList;
 	private List<Attachment> attachments;
 	private String from;
+	private String password;
 	private List<String> ccList;
 	private List<String> bccList;
 	private String subject;
 	private String text;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public List<String> getToList() {
 		return toList;
@@ -70,8 +89,9 @@ public class EmailInfo {
 
 	@Override
 	public String toString() {
-		return "EmailInfo [toList=" + toList + ", attachments=" + attachments + ", from=" + from + ", ccList=" + ccList
-				+ ", bccList=" + bccList + ", subject=" + subject + ", text=" + text + "]";
+		return "EmailInfo [toList=" + toList + ", attachments=" + attachments + ", from=" + from + ", password="
+				+ password + ", ccList=" + ccList + ", bccList=" + bccList + ", subject=" + subject + ", text=" + text
+				+ ", name=" + name + "]";
 	}
 
 }

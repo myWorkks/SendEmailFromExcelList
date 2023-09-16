@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.utility;
 
 import java.time.LocalDateTime;
 

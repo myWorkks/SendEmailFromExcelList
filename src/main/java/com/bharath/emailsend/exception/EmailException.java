@@ -1,4 +1,4 @@
-package com.bharath.emailsend;
+package com.bharath.emailsend.exception;
 
 public class EmailException extends RuntimeException {
 	public EmailException(String message) {
